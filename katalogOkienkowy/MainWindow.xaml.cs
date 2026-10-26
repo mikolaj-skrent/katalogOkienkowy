@@ -19,6 +19,21 @@ namespace katalogOkienkowy
         public MainWindow()
         {
             InitializeComponent();
+
+            // stworz liste kilku prodtuktow
+            List<Produkt> produkty = new List<Produkt>
+            {
+                new Produkt("Okno 1", 200.0, "Okna", 10),
+                new Produkt("Okno 2", 250.0, "Okna", 5),
+                new Produkt("Drzwi 1", 500.0, "Drzwi", 3)
+            };
+
+            EtykietaLiczbaProduktow.Text = $"Liczba produktów: {produkty.Count}";
+
+            // stworz liste wartosci magazynu
+            List<double> wartosciMagazynu = produkty.Select(p => p.WartoscMagazynu).ToList();
+
+            EtykietaMagazynu.Text = $"Wartość magazynu: {wartosciMagazynu.Sum():f2} zł";
         }
     }
 }
