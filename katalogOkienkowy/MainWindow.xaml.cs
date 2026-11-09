@@ -28,7 +28,7 @@ namespace katalogOkienkowy
                 new Produkt("Drzwi 1", 500.0, "Drzwi", 3)
             };
 
-            EtykietaLiczbaProduktow.Text = $"Liczba produktów: {produkty.Count}";
+            EtykietaLiczbaProduktow.Text = $" {produkty.Count}";
 
             // stworz liste wartosci magazynu
             List<double> wartosciMagazynu = produkty.Select(p => p.WartoscMagazynu).ToList();
