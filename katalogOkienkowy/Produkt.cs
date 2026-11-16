@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace katalogOkienkowy
@@ -24,47 +23,47 @@ namespace katalogOkienkowy
                 }
             }
         }
-
-        // Prywatne pole przechowujące cenę
+        // to jest prywatne pole które przechowuje wartość ceny produktu
         private double _cena;
+        //to jest publiczna właściwość (pole) która pozwala na KONTROLOWANY dostęp do prywatnego pola _cena
         public double Cena
         {
-            get { return _cena; }
-            set
+            get { return _cena; } //jeśli ktoś chce przeczytać cenę produktu, to zwracamy wartość prywatnego pola _cena - nie ma problemu
+            set //jeśli ktoś chce ustawić cenę produktu, to sprawdzamy czy wartość jest poprawna
             {
-                if (value < 0)
+                if (value < 0) //jeśli ktoś próbuje ustawić cenę na wartość ujemną, to wyrzucamy wyjątek
                 {
                     _cena = 0;
                     throw new ArgumentException("Cena nie może być ujemna.");
                 }
-                else
+                else //w innym przypadku ustawiamy wartość prywatnego pola _cena na wartość podaną przez użytkownika
                 {
                     _cena = value;
                 }
             }
         }
+        public int MinimalnyStan { get; set; } // minimalny stan magazynu - można ustawić z zewnątrz
 
-        public int MinimalnyStan { get; set; }
         public string Kategoria { get; set; }
-        public int Ilosc { get; private set; } // Poprawiono błąd z nadmiarową klamrą zamykającą klasę
+        public int Ilosc { get; private set; } // ilość nie może być zmieniana z zewnątrz, tylko w konstruktorze lub metodach klasy}
 
-        // Właściwość wyliczana
+        // właściwość wyliczana - nie przechowujemy tego tylko liczymy na żywo
         public double WartoscMagazynu
         {
             get { return Cena * Ilosc; }
         }
 
-        // Konstruktor pełny
+        //konstruktor - ten wymaga podania wszytkich parametrów przy tworzeniu obiektu
         public Produkt(string nazwa, double cena, string kategoria, int ilosc)
         {
+            //nadajemy wartości pól obiektu na podstawie parametrów konstruktora
             Nazwa = nazwa;
             Cena = cena;
             Kategoria = kategoria;
             Ilosc = ilosc;
-            MinimalnyStan = 1;
+            MinimalnyStan = 1; // ustawiamy domyślny minimalny stan magazynu
         }
-
-        // Konstruktor skrócony (tylko nazwa)
+        //ten konstruktor pozwala na tworzenie obiektu tylko z nazwą, reszta pól przyjmie wartości domyślne
         public Produkt(string nazwa)
         {
             Nazwa = nazwa;
@@ -73,74 +72,70 @@ namespace katalogOkienkowy
             Ilosc = 0;
             MinimalnyStan = 1;
         }
-
-        // Metoda wypisująca bezpośrednio na konsolę
+        //funkcja wypisuje informacje o produkcie w formacie kolumn tabeli
         public void WypiszProdukt()
         {
             Console.WriteLine($"Nazwa: {Nazwa,-15}| Cena: {Cena,10:f2} zł | " +
                 $"Kategoria: {Kategoria} | Ilość: {Ilosc,5} | Wartość magazynu: {WartoscMagazynu,10:f2} zł");
         }
-
-        // Przeciążenie metody ToString() dla eleganckiego zwracania tekstu
+        //ta metoda zwraca string z tymi samymi informacjami o produkcie, ale nie wypisuje ich na ekran
+        //używamy przeciążenia żeby zmienić domyślne zachowanie metody ToString() która jest dziedziczona po klasie Object
         public override string ToString()
         {
             return $"Nazwa: {Nazwa,-15}| Cena: {Cena,10:f2} zł | " +
                 $"Kategoria: {Kategoria} | Ilość: {Ilosc,5} | Wartość magazynu: {WartoscMagazynu,10:f2} zł";
         }
-
-        // Metoda statyczna dla tablicy produktów
+        //funkcja statyczna - liczy sumę wartości magazynu dla wszystkich produktów w tablicy
         public static double ObliczWartoscMagazynu(Produkt[] produkty)
         {
-            double suma = 0;
-            foreach (Produkt produkt in produkty)
+            double suma = 0; // pusty licznik na sume
+            foreach (Produkt produkt in produkty) //dla każdego produktu w tablicy produktów
             {
-                suma += produkt.WartoscMagazynu;
+                suma += produkt.WartoscMagazynu; // dodajemy jego wartość magazynu do sumy
             }
-            return suma;
+            return suma; //na koniec zwracamy sumę wartości magazynu
         }
-
-        // Przeciążona metoda statyczna dla listy produktów (użycie LINQ)
+        //wariant funkcji liczącej sumę wartości magazynu dla listy produktów
         public static double ObliczWartoscMagazynu(List<Produkt> produkty)
         {
-            return produkty.Sum(p => p.WartoscMagazynu);
+            return produkty.Sum(p => p.WartoscMagazynu); //na koniec zwracamy sumę wartości magazynu
         }
-
-        // Sprawdzenie czy można zamówić produkt
+        //zwraca prawda jeśli ilość jest większa niż minimalny stan, czyli można zamówić produkt
         public bool CzyMoznaZamowic()
         {
-            return Ilosc > MinimalnyStan;
+            return Ilosc > MinimalnyStan; // jeśli ilość jest większa niż minimalny stan, to można zamówić
         }
-
-        // Obsługa sprzedaży produktu
+        //funkcja sprzedaje produkt - zmniejsza ilość o 1 jeśli jest na stanie, jeśli nie ma to wypisuje komunikat
         public void Sprzedaj()
         {
-            if (CzyMoznaZamowic())
+            if (CzyMoznaZamowic()) //czy można zamówić - czy mamy dość na stanie?
             {
+                //tak, zdejmij ze stanu jedną sztukę
                 Ilosc--;
+                //wypisz informację o sprzedaży
                 Console.WriteLine($"Sprzedano produkt: {Nazwa}. Pozostało na stanie: {Ilosc}");
             }
             else
             {
+                //nie, nie można sprzedać, bo nie ma na stanie
                 Console.WriteLine($"Nie można sprzedać produktu: {Nazwa}. Brak na stanie.");
             }
         }
-
         public static Produkt ZnajdzPoNazwie(Produkt[] produkty, string nazwa)
         {
             foreach (var produkt in produkty)
             {
                 if (produkt.Nazwa == nazwa)
                 {
-                    return produkt;
+                    return produkt; //znaleźliśmy produkt o podanej nazwie, zwracamy go
                 }
-                
             }
-            return null; // Zwraca null, jeśli produkt nie został znaleziony
+            return null; //jeśli nie znaleźliśmy produktu o podanej nazwie, zwracamy null
         }
-
-        //public static Produkt ZnajdzPoNazwie(List<Produkt> produkty, string nazwa)
-        //{
-        //    return produkty.FirstOrDefault(p => p.Nazwa.Contains(nazwa, StringComparison.OrdinalIgnoreCase));
-        //}
-    } 
+        public static Produkt ZnajdzPoNazwie(List<Produkt> produkty, string nazwa)
+        {
+            //zwróć pierwszy który znajdziesz z podobną nazwą (niezależnie od wielkości liter) lub null jeśli nie znajdziesz
+            return produkty.FirstOrDefault(p => p.Nazwa.Contains(nazwa, StringComparison.OrdinalIgnoreCase)); //zwraca pierwszy produkt o podanej nazwie lub null jeśli nie znaleziono
+        }
+    }
 }

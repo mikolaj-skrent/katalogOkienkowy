@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using katalogOkienkowy;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -20,20 +21,24 @@ namespace katalogOkienkowy
         {
             InitializeComponent();
 
-            // stworz liste kilku prodtuktow
+            //stwórz listę kilku produktów - części komputerowych
             List<Produkt> produkty = new List<Produkt>
             {
-                new Produkt("Okno 1", 200.0, "Okna", 10),
-                new Produkt("Okno 2", 250.0, "Okna", 5),
-                new Produkt("Drzwi 1", 500.0, "Drzwi", 3)
+                new Produkt("Procesor Intel Core i9", 1500.00, "Procesory", 10),
+                new Produkt("Karta graficzna NVIDIA GeForce RTX 3080", 4000.00, "Karty graficzne", 5),
+                new Produkt("Płyta główna ASUS ROG Strix Z590-E", 1200.00, "Płyty główne", 8),
+                new Produkt("Pamięć RAM Corsair Vengeance LPX 16GB", 400.00, "Pamięci RAM", 20),
+                new Produkt("Dysk SSD Samsung 970 EVO Plus 1TB", 600.00, "Dyski SSD", 15)
             };
 
-            EtykietaLiczbaProduktow.Text = $" {produkty.Count}";
+            EtykietaLiczbaProduktow.Text = produkty.Count.ToString();
+            EtykietaWartoscMagazynu.Text = $"{Produkt.ObliczWartoscMagazynu(produkty):f2} zł";
 
-            // stworz liste wartosci magazynu
-            List<double> wartosciMagazynu = produkty.Select(p => p.WartoscMagazynu).ToList();
-
-            EtykietaMagazynu.Text = $"Wartość magazynu: {wartosciMagazynu.Sum():f2} zł";
+            //TextBlock dopisek = new TextBlock();
+            //dopisek.Text = "To zostało dodane bezpośrednio w kodzie C#";
+            //dopisek.FontSize = 14;
+            //stackpanel musi miec x:Name żeby to zadziałało
+            //GlownyStackPanel.Children.Add(dopisek);
         }
     }
 }
