@@ -66,10 +66,10 @@
                 <ComboBoxItem Content="Dyski SSD"/>
             </ComboBox>
             <!-- dostępność produktu-->
-            <CheckBox x:Name="CheckBoxDostepnosc" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Margin="93,0,0,0" 
+            <CheckBox x:Name="CheckBoxDostepnosc" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,10" s
                       Content="Produkt dostępny" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <!-- dodaj produkt-->
-            <Button x:Name="ButtonDodaj" Grid.Row="4" Grid.Column="0" Margin="0,10,0,10"
+            <Button x:Name="ButtonDodaj" Grid.Row="5" Grid.Column="0" Margin="0,10"
                     Grid.ColumnSpan="3" 
                     Content="Dodaj" />
         </Grid>
