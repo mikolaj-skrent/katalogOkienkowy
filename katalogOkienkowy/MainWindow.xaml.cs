@@ -34,11 +34,7 @@ namespace katalogOkienkowy
             EtykietaLiczbaProduktow.Text = produkty.Count.ToString();
             EtykietaWartoscMagazynu.Text = $"{Produkt.ObliczWartoscMagazynu(produkty):f2} zł";
 
-            //TextBlock dopisek = new TextBlock();
-            //dopisek.Text = "To zostało dodane bezpośrednio w kodzie C#";
-            //dopisek.FontSize = 14;
-            //stackpanel musi miec x:Name żeby to zadziałało
-            //GlownyStackPanel.Children.Add(dopisek);
+           
         }
     }
 }
